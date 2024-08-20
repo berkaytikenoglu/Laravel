@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -34,39 +35,54 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-  
-     public function store(Request $request)
-     {
-         try {
-             $validatedData = $request->validate([
-                 'tc_identity' => 'required|string|max:255',
-                 'firstname' => 'required|string|max:255',
-                 'lastname' => 'required|string|max:255',
-                 'phonenumber' => 'required|string|max:255',
-                 'email' => 'required|string|email|max:255|unique:users',
-                 'password' => 'required|string|min:8',
-             ]);
 
-           
-             $user = User::create([
-                 'tc_identity' => $validatedData['tc_identity'],
-                 'firstname' => $validatedData['firstname'],
-                 'lastname' => $validatedData['lastname'],
-                 'phonenumber' => $validatedData['phonenumber'],
-                 'name' => $validatedData['firstname'],
-                 'email' => $validatedData['email'],
-                 'password' => Hash::make($validatedData['password']),
-             ]);
-     
-             return response()->json([
-                 'message' => 'User successfully created!',
-                 'user' => $user
-             ], 201);
-         } catch (\Illuminate\Validation\ValidationException $e) {
-             return response()->json([
-                 'errors' => $e->errors()
-             ], 422);
-         }
+    public function store(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'tc_identity' => 'required|string|max:11|unique:users',
+                'firstname' => 'required|string|max:255',
+                'lastname' => 'required|string|max:255',
+                'phonenumber' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8',
+            ]);
+
+
+            $user = User::create([
+                'tc_identity' => $validatedData['tc_identity'],
+                'firstname' => $validatedData['firstname'],
+                'lastname' => $validatedData['lastname'],
+                'phonenumber' => $validatedData['phonenumber'],
+                'name' => $validatedData['firstname'] . " " . $validatedData['lastname'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+            ]);
+
+            return response()->json(
+                [
+                    'status' => true,
+                    'message' => "Başarılıyla kayıt yaptınız.",
+
+                    'response' => [
+                        'user' => $user,
+                    ],
+
+                ],
+                201
+            );
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(
+
+                [
+                    'status' => true,
+                    'message' => $e->errors(),
+                    'response' => [],
+
+                ],
+                422
+            );
+        }
     }
 
     /**
@@ -111,7 +127,7 @@ class UserController extends Controller
             'email' => 'string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8',
         ]);
-    
+
         // Update fields
         $user->name = $validated['name'] ?? $user->name;
         $user->email = $validated['email'] ?? $user->email;
@@ -119,7 +135,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->input('password')); // Şifreyi güncelle
         }
         $user->save(); // Değişiklikleri veritabanına kaydet
-    
+
         return response()->json($user);
     }
 

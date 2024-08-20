@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,23 +10,58 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        // Giriş verilerini doğrulama
         $request->validate([
-            'email' => 'required|email',
+            'tc_identity' => 'required',
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $tcIdentity = $request->input('tc_identity');
+        $password = $request->input('password');
+        $user = User::where('tc_identity', $tcIdentity)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$user) {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => "Kullanıcı Bulunamadı!",
+                    'response' => [],
+                ],
+                401
+            );
+        }
+
+        // Şifreyi kontrol etme
+        if (!Hash::check($password, $user->password)) {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => "Kullanıcı Bulunamadı!",
+                    'response' => [],
+                ],
+                401
+            );
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]);
+
+        // İzinleri alma
+        $permissions = $user->permissions; // İzinleri çekiyoruz
+        return response()->json(
+            [
+                'status' => true,
+                'message' => "Başarılı ile giriş yaptınız.",
+
+                'response' => [
+                    'access_token' => $token,
+                    'token_type' => 'Bearer',
+                    'user' => $user,
+                    'permissions' => $permissions,
+                ],
+            ],
+            200
+        );
     }
 
     public function logout(Request $request)
