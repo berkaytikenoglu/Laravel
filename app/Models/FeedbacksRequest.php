@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Request extends Model
+class FeedbacksRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'category_id', 'description', 'status_id', 'response_status', 'date', 'documents', 'address_id'];
+    protected $fillable = ['user_id', 'category_id', 'subject',  'description', 'status_id', 'response_status', 'date', 'documents', 'address_id'];
 
     protected $casts = [
         'documents' => 'array',

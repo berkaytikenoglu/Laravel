@@ -1,4 +1,4 @@
-<?php 
+<?php
 // app/Models/Address.php
 namespace App\Models;
 
@@ -9,7 +9,7 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['street', 'city', 'state', 'country', 'postal_code'];
+    protected $fillable = ['street', 'address_user', 'city', 'state', 'country', 'postal_code'];
 
     // İlişkiler
     public function requests()

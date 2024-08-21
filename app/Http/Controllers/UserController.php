@@ -15,8 +15,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return response()->json($users);
+        $users = User::with('permission')->get();
+
+
+        return response()->json(
+            [
+                'status' => true,
+                'message' => "Üye Listesi Getiriliyor.",
+                'response' => ($users),
+
+            ],
+        );
     }
 
     /**
@@ -46,10 +55,15 @@ class UserController extends Controller
                 'phonenumber' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8',
+                'big_avatar' => 'string|nullable',
+                'normal_avatar' => 'string|nullable',
+                'min_avatar' => 'string|nullable',
             ]);
 
 
-            $user = User::create([
+
+            // Başlangıçta boş bir veri dizisi oluştur
+            $data = [
                 'tc_identity' => $validatedData['tc_identity'],
                 'firstname' => $validatedData['firstname'],
                 'lastname' => $validatedData['lastname'],
@@ -57,7 +71,27 @@ class UserController extends Controller
                 'name' => $validatedData['firstname'] . " " . $validatedData['lastname'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
-            ]);
+            ];
+
+            // Dinamik olarak avatar değerlerini ekle
+            if (!empty($validatedData['big_avatar'])) {
+                $data['big_avatar'] = $validatedData['big_avatar'];
+            }
+
+            if (!empty($validatedData['normal_avatar'])) {
+                $data['normal_avatar'] = $validatedData['normal_avatar'];
+            }
+
+            if (!empty($validatedData['min_avatar'])) {
+                $data['min_avatar'] = $validatedData['min_avatar'];
+            }
+
+            // Kullanıcıyı oluşturun
+            $user = User::create($data);
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            // İlişkileri yükleyin
+            $userWithPermissions = User::with('permission')->find($user->id);
 
             return response()->json(
                 [
@@ -65,22 +99,22 @@ class UserController extends Controller
                     'message' => "Başarılıyla kayıt yaptınız.",
 
                     'response' => [
-                        'user' => $user,
+                        'access_token' => $token,
+                        'token_type' => 'Bearer',
+                        'user' => $userWithPermissions,
                     ],
-
                 ],
-                201
             );
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(
 
                 [
-                    'status' => true,
+                    'status' => false,
                     'message' => $e->errors(),
                     'response' => [],
 
                 ],
-                422
+
             );
         }
     }
@@ -96,7 +130,16 @@ class UserController extends Controller
         //
 
         $user = User::findOrFail($id);
-        return response()->json($user);
+        return response()->json(
+            [
+                'status' => true,
+                'message' => "Başarılıyla düzenleme yaptınız.",
+                'response' => [
+                    'user' => $user,
+                ],
+
+            ],
+        );
     }
 
     /**
@@ -136,7 +179,16 @@ class UserController extends Controller
         }
         $user->save(); // Değişiklikleri veritabanına kaydet
 
-        return response()->json($user);
+        return response()->json(
+            [
+                'status' => true,
+                'message' => "Başarılıyla düzenleme yaptınız.",
+                'response' => [
+                    'user' => $user,
+                ],
+
+            ],
+        );
     }
 
     /**

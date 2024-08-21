@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRequestsTable extends Migration
+class CreateFeedbacksRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,18 @@ class CreateRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('feedbacks_requests', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained('feedbacks_categories')->onDelete('cascade');
-            $table->foreignId('status_id')->constrained('statuses')->onDelete('set null'); // Status için yabancı anahtar
+            $table->foreignId('status_id')->nullable()->constrained('statuses')->onDelete('set null'); // Status için yabancı anahtar
+            $table->text('subject');
             $table->text('description');
             $table->string('response_status')->nullable();
-            $table->date('date');
+            $table->datetime('date');
             $table->json('documents')->nullable(); // JSON formatında belgeler
-            $table->foreignId('address_id')->constrained()->onDelete('set null');
+            $table->foreignId('address_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -35,6 +36,6 @@ class CreateRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('feedbacks_requests');
     }
 }

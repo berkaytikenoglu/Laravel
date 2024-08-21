@@ -16,12 +16,10 @@ class User extends Authenticatable
 
 
 
-    // public function permissions(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Permission::class, 'permissions')
-    //         ->withPivot('id');
-    // }
-
+    public function permission()
+    {
+        return $this->belongsTo(Permission::class, 'permission');
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -34,8 +32,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'big_avatar',
+        'normal_avatar',
+        'min_avatar',
         'phonenumber',
         'permission',
+        'gender',
     ];
 
     /**

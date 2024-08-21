@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +19,7 @@ class AuthController extends Controller
 
         $tcIdentity = $request->input('tc_identity');
         $password = $request->input('password');
-        $user = User::where('tc_identity', $tcIdentity)->first();
+        $user = User::with('permission')->where('tc_identity', $tcIdentity)->first();
 
         if (!$user) {
             return response()->json(
@@ -27,7 +28,6 @@ class AuthController extends Controller
                     'message' => "Kullanıcı Bulunamadı!",
                     'response' => [],
                 ],
-                401
             );
         }
 
@@ -39,15 +39,10 @@ class AuthController extends Controller
                     'message' => "Kullanıcı Bulunamadı!",
                     'response' => [],
                 ],
-                401
             );
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
-
-
-        // İzinleri alma
-        $permissions = $user->permissions; // İzinleri çekiyoruz
         return response()->json(
             [
                 'status' => true,
@@ -57,10 +52,8 @@ class AuthController extends Controller
                     'access_token' => $token,
                     'token_type' => 'Bearer',
                     'user' => $user,
-                    'permissions' => $permissions,
                 ],
             ],
-            200
         );
     }
 
