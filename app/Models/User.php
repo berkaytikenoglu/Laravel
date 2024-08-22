@@ -20,6 +20,17 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Permission::class, 'permission');
     }
+
+    // İlişkiler
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class, 'gender');
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class, 'address');
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -35,6 +46,9 @@ class User extends Authenticatable
         'big_avatar',
         'normal_avatar',
         'min_avatar',
+        'big_banner',
+        'normal_banner',
+        'min_banner',
         'phonenumber',
         'permission',
         'gender',

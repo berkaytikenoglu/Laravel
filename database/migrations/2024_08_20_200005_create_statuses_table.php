@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFeedbacksCategoriesTable extends Migration
+class CreateStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateFeedbacksCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('feedbacks_categories', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
+            $table->string('color');
             $table->timestamps();
+
+            // InnoDB motorunu belirtmek için:
+            $table->engine = 'InnoDB';
         });
     }
 
@@ -28,6 +31,6 @@ class CreateFeedbacksCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feedbacks_categories');
+        Schema::dropIfExists('statuses');
     }
 }

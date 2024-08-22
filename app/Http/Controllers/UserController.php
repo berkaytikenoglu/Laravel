@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('permission')->get();
+        $users = User::with('permission')->with('gender')->get();
 
 
         return response()->json(
@@ -91,7 +91,7 @@ class UserController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             // İlişkileri yükleyin
-            $userWithPermissions = User::with('permission')->find($user->id);
+            $userWithPermissions = User::with('permission')->with('gender')->find($user->id);
 
             return response()->json(
                 [
@@ -133,7 +133,7 @@ class UserController extends Controller
         return response()->json(
             [
                 'status' => true,
-                'message' => "Başarılıyla düzenleme yaptınız.",
+                'message' => "Kullanıcı bilgileri getirilyor.",
                 'response' => [
                     'user' => $user,
                 ],
@@ -166,6 +166,8 @@ class UserController extends Controller
 
         // Validate incoming data
         $validated = $request->validate([
+            'firstname' => 'string|max:255',
+            'lastname' => 'string|max:255',
             'name' => 'string|max:255',
             'email' => 'string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8',

@@ -14,6 +14,6 @@ class Permission extends Model
     // İlişkiler
     public function users()
     {
-        return $this->hasMany(User::class, 'id');
+        return $this->hasMany(User::class, 'user');
     }
 }

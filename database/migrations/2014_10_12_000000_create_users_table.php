@@ -26,10 +26,21 @@ class CreateUsersTable extends Migration
             $table->string('big_avatar')->default('https://t4.ftcdn.net/jpg/03/34/03/41/360_F_334034105_JGk5y6htQnTYBpu0TOr8zxlRVw2IV49e.jpg');
             $table->string('normal_avatar')->default('https://t4.ftcdn.net/jpg/03/34/03/41/360_F_334034105_JGk5y6htQnTYBpu0TOr8zxlRVw2IV49e.jpg');
             $table->string('min_avatar')->default('https://t4.ftcdn.net/jpg/03/34/03/41/360_F_334034105_JGk5y6htQnTYBpu0TOr8zxlRVw2IV49e.jpg');
-            $table->string('permission')->nullable()->default('1');
-            $table->string('gender')->nullable()->default('3');
+
+            $table->string('big_banner')->default('https://www.fatsa.bel.tr/upload/projects/yeni-hizmet-binasi/yeni-hizmet-binasi_1729.jpeg');
+            $table->string('normal_banner')->default('https://www.fatsa.bel.tr/upload/projects/yeni-hizmet-binasi/yeni-hizmet-binasi_1729.jpeg');
+            $table->string('min_banner')->default('https://www.fatsa.bel.tr/upload/projects/yeni-hizmet-binasi/yeni-hizmet-binasi_1729.jpeg');
+            $table->foreignId('permission')->nullable()->default('2')->constrained()->onDelete('set null');
+            $table->foreignId('gender')->nullable()->default('3')->constrained()->onDelete('set null');
+            $table->boolean('status')->default(true);
+            $table->boolean('status_ban')->default(false);
+            $table->foreignId('address')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+
+            // InnoDB motorunu belirtmek için:
+            $table->engine = 'InnoDB';
         });
     }
 

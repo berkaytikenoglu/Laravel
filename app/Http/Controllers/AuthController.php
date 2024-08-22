@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +18,7 @@ class AuthController extends Controller
 
         $tcIdentity = $request->input('tc_identity');
         $password = $request->input('password');
-        $user = User::with('permission')->where('tc_identity', $tcIdentity)->first();
+        $user = User::with('permission')->with('gender')->with('address')->where('tc_identity', $tcIdentity)->first();
 
         if (!$user) {
             return response()->json(

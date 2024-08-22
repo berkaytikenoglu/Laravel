@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model
+class Gender extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
-
-
+    protected $fillable = ['name', 'color'];
     // İlişkiler
-    public function requests()
+    public function users()
     {
-        return $this->hasMany(FeedbacksRequest::class);
+        return $this->hasMany(User::class, 'user');
     }
 }

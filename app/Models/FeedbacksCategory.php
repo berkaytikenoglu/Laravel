@@ -12,6 +12,7 @@ class FeedbacksCategory extends Model
     protected $fillable = ['name'];
 
     // İlişkiler
+
     public function requests()
     {
         return $this->hasMany(FeedbacksRequest::class);

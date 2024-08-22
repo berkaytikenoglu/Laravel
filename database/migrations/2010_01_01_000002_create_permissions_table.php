@@ -27,6 +27,9 @@ class CreatePermissionsTable extends Migration
             $table->boolean('canreportrequest')->default(false);
             $table->boolean('caneditmyprofile')->default(false);
             $table->timestamps();
+
+            // InnoDB motorunu belirtmek için:
+            $table->engine = 'InnoDB';
         });
     }
 

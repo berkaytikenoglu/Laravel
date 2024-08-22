@@ -1,4 +1,4 @@
-<?php 
+<?php
 // app/Models/Message.php
 namespace App\Models;
 
@@ -14,6 +14,6 @@ class Message extends Model
     // İlişkiler
     public function request()
     {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(FeedbacksRequest::class);
     }
 }

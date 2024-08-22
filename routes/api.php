@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FeedbacksRequestController;
+use App\Http\Controllers\AddressController;
 
 
 /*
@@ -38,3 +39,5 @@ Route::post('users', [UserController::class, 'store']);
 // Route::get('requests', [FeedbacksRequestController::class, 'index']);
 
 Route::apiResource('requests', FeedbacksRequestController::class);
+
+Route::apiResource('address', AddressController::class);

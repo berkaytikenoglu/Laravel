@@ -18,6 +18,9 @@ class CreateMessagesTable extends Migration
             $table->foreignId('request_id')->constrained()->onDelete('cascade');
             $table->text('content');
             $table->timestamps();
+
+            // InnoDB motorunu belirtmek için:
+            // $table->engine = 'InnoDB';
         });
     }
 

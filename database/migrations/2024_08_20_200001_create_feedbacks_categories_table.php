@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAddressesTable extends Migration
+class CreateFeedbacksCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class CreateAddressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('addresses', function (Blueprint $table) {
+        Schema::create('feedbacks_categories', function (Blueprint $table) {
             $table->id();
-            $table->integer('address_user');
-            $table->string('street');
-            $table->string('city');
-            $table->string('state');
-            $table->string('country');
-            $table->string('postal_code');
-
+            $table->string('name');
+            $table->string('description');
             $table->timestamps();
+
+            // InnoDB motorunu belirtmek için:
+            $table->engine = 'InnoDB';
         });
     }
 
@@ -33,6 +31,6 @@ class CreateAddressesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('addresses');
+        Schema::dropIfExists('feedbacks_categories');
     }
 }
