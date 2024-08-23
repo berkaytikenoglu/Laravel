@@ -6,7 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FeedbacksRequestController;
 use App\Http\Controllers\AddressController;
-
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\FeedbacksCategoriesController;
+use App\Http\Controllers\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,11 @@ Route::post('users', [UserController::class, 'store']);
 // web.php veya api.php (route tanımlama dosyanıza bağlı olarak)
 // Route::get('requests', [FeedbacksRequestController::class, 'index']);
 
-Route::apiResource('requests', FeedbacksRequestController::class);
+Route::apiResource('requests', FeedbacksRequestController::class)->middleware('auth:sanctum');
 
-Route::apiResource('address', AddressController::class);
+Route::apiResource('address', AddressController::class)->middleware('auth:sanctum');
+Route::apiResource('messages', MessageController::class)->middleware('auth:sanctum');
+
+
+Route::apiResource('categories', FeedbacksCategoriesController::class);
+Route::apiResource('permissions', PermissionController::class);

@@ -20,12 +20,20 @@ class CreatePermissionsTable extends Migration
             $table->string('category');
             $table->boolean('canshowadminpanel')->default(false);
             $table->boolean('canedituser')->default(false);
+            $table->boolean('candeleteuser')->default(false);
+            $table->boolean('canuploaduseravatar')->default(false);
+
             $table->boolean('canresponserequest')->default(false);
-            $table->boolean('canuploadavatar')->default(false);
+            $table->json('canresponserequestlist')->nullable()->default(null);
+
             $table->boolean('canaddfeedbackcategory')->default(false);
             $table->boolean('candeletefeedbackcategory')->default(false);
             $table->boolean('canreportrequest')->default(false);
+
             $table->boolean('caneditmyprofile')->default(false);
+            $table->boolean('candeletemyprofile')->default(false);
+            $table->boolean('canuploaduseravatarmyprofile')->default(false);
+
             $table->timestamps();
 
             // InnoDB motorunu belirtmek için:

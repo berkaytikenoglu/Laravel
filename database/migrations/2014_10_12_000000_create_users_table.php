@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('big_banner')->default('https://www.fatsa.bel.tr/upload/projects/yeni-hizmet-binasi/yeni-hizmet-binasi_1729.jpeg');
             $table->string('normal_banner')->default('https://www.fatsa.bel.tr/upload/projects/yeni-hizmet-binasi/yeni-hizmet-binasi_1729.jpeg');
             $table->string('min_banner')->default('https://www.fatsa.bel.tr/upload/projects/yeni-hizmet-binasi/yeni-hizmet-binasi_1729.jpeg');
-            $table->foreignId('permission')->nullable()->default('2')->constrained()->onDelete('set null');
+            $table->foreignId('permission')->nullable()->default('1')->constrained()->onDelete('set null');
             $table->foreignId('gender')->nullable()->default('3')->constrained()->onDelete('set null');
             $table->boolean('status')->default(true);
             $table->boolean('status_ban')->default(false);

@@ -15,12 +15,14 @@ class CreateMessagesTable extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('request_id')->constrained()->onDelete('cascade');
+            $table->foreignId('feedbacks_request_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->text('content');
+            $table->boolean('view_status')->default(0);
             $table->timestamps();
 
             // InnoDB motorunu belirtmek için:
-            // $table->engine = 'InnoDB';
+            $table->engine = 'InnoDB';
         });
     }
 

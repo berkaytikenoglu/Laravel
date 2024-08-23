@@ -17,11 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-Route::get('/ada', function () {
-    return view('welcome');
-});
-
 //Route sayfaları
 // Auth::routes();
 

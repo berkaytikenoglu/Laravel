@@ -24,6 +24,7 @@ class UsersTableSeeder extends Seeder
                 'lastname' => '...',
                 'email' => 'admin@admin.com',
                 'gender' => '1',
+                'permission' => '2',
                 'password' => Hash::make('12345678'),
                 'big_avatar' => 'https://i0.wp.com/www.andersoncollege.com/wp-content/uploads/2023/01/shutterstock_137149802-e1675176612460.jpg?fit=600%2C400&ssl=1',
                 'normal_avatar' => 'https://i0.wp.com/www.andersoncollege.com/wp-content/uploads/2023/01/shutterstock_137149802-e1675176612460.jpg?fit=600%2C400&ssl=1',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -162,6 +163,23 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $permission = Permission::find($request->user()->permission);
+
+        if ($request->user()->id != $id && $permission->canedituser == false) {
+
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => "Kendinizden başkasının profilini düzenleymezsiniz!",
+                    'response' => [
+                        'user' => $request->user(),
+                    ],
+
+                ],
+            );
+        }
+
         $user = User::find($id); // ID'ye göre kullanıcıyı bul
 
         // Validate incoming data
@@ -174,6 +192,8 @@ class UserController extends Controller
         ]);
 
         // Update fields
+        $user->firstname = $validated['firstname'] ?? $user->firstname;
+        $user->lastname = $validated['lastname'] ?? $user->lastname;
         $user->name = $validated['name'] ?? $user->name;
         $user->email = $validated['email'] ?? $user->email;
         if (!empty($request->input('password'))) {
@@ -199,12 +219,31 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         //
+        $permission = Permission::find($request->user()->permission);
 
-        $user = User::findOrFail($id);
+        if ($request->user()->id != $id && $permission->candeleteuser == false) {
+
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => "Kendinizden başkasının profilini düzenleymezsiniz!",
+                    'response' => [
+                        'user' => $request->user(),
+                    ],
+
+                ],
+            );
+        }
+
+        $user = User::find($id);
         $user->delete();
-        return response()->json(null, 204);
+        return response()->json([
+            'status' => true,
+            'message' => "Proile silindi!",
+            'response' => [],
+        ], 200);
     }
 }

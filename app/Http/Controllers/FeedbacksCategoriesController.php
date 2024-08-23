@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FeedbacksCategory;
 use Illuminate\Http\Request;
-use App\Models\FeedbacksRequest;
-use App\Models\Address;
 
-class FeedbacksRequestController extends Controller
+class FeedbacksCategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +15,7 @@ class FeedbacksRequestController extends Controller
     public function index()
     {
         //
-        $request = FeedbacksRequest::with('user')->with('status')->with('feedbacks_category')->get();
+        $request = FeedbacksCategory::all();
         return response()->json(
             [
                 'status' => true,
@@ -45,54 +44,34 @@ class FeedbacksRequestController extends Controller
      */
     public function store(Request $request)
     {
-
-        $user = $request->user();
+        //
         try {
             $validatedData = $request->validate([
-                'category_id' => 'required|int|max:11|',
-                'subject' => 'required|string|max:255',
+                'name' => 'required|string|max:255|',
                 'description' => 'required|string|max:255',
-                'address_description' => 'required|string|max:255',
-                'address_insidedoor' => 'required|string|max:255',
-                'address_outdoor' => 'required|string|max:255',
-                'address_street' => 'required|string|max:255',
-                'address_neighbourhood' => 'required|string|max:255',
-                'address_city' => 'required|string|max:255',
-                'address_province' => 'required|string|max:255',
-                'address_country' => 'required|string|max:255',
-                'address_postal_code' => 'required|string|max:255',
+                'color' => 'required|string|max:255',
+                'icon' => 'required|string|max:255',
             ]);
 
 
 
-            // Başlangıçta boş bir veri dizisi oluştur
             $data = [
-                'feedbacks_category' => $validatedData['category_id'],
-                'user' => $user->id,
-                'subject' => $validatedData['subject'],
+                'name' => $validatedData['name'],
                 'description' => $validatedData['description'],
-                'address_description' => $validatedData['address_description'],
-                'address_insidedoor' => $validatedData['address_insidedoor'],
-                'address_outdoor' => $validatedData['address_outdoor'],
-                'address_street' => $validatedData['address_street'],
-                'address_neighbourhood' => $validatedData['address_neighbourhood'],
-                'address_city' => $validatedData['address_city'],
-                'address_province' => $validatedData['address_province'],
-                'address_country' => $validatedData['address_country'],
-                'address_postal_code' => $validatedData['address_postal_code'],
-                'address_date' => date('Y-m-d H:i:s'),
+                'color' => $validatedData['color'],
+                'icon' => $validatedData['icon'],
             ];
 
             // Kullanıcıyı oluşturun
-            $request = FeedbacksRequest::create($data);
+            $category = FeedbacksCategory::create($data);
 
 
             return response()->json(
                 [
                     'status' => true,
-                    'message' => "Başarılıyla request kayıt yaptınız.",
+                    'message' => "Başarılıyla kategori kayıdı yaptınız.",
                     'response' => [
-                        'request' => $request,
+                        'category' => $category,
                     ],
                 ],
             );

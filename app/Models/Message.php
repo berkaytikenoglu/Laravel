@@ -9,11 +9,16 @@ class Message extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['request_id', 'content'];
+    protected $fillable = ['feedbacks_request_id', 'user_id', 'content', 'view_status'];
 
     // İlişkiler
     public function request()
     {
-        return $this->belongsTo(FeedbacksRequest::class);
+        return $this->belongsTo(FeedbacksRequest::class, 'request_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
